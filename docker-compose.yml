@@ -1,0 +1,54 @@
+services:
+  comfyui:
+    init: true
+    container_name: comfyui
+    hostname: comfyui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: apsoyka/comfyui:latest
+    ports:
+      - 8188:8188/tcp
+    volumes:
+      - type: volume
+        source: comfyui-home
+        target: /home/runner
+      - type: bind
+        source: $HOME/ComfyUI/output
+        target: /home/runner/output
+        bind:
+          create_host_path: true
+          selinux: z
+      - type: bind
+        source: $HOME/ComfyUI/input
+        target: /home/runner/input
+        bind:
+          create_host_path: true
+          selinux: z
+        read_only: true
+      - type: bind
+        source: $HOME/ComfyUI/models
+        target: /home/runner/models
+        bind:
+          create_host_path: true
+          selinux: z
+        read_only: true
+    environment:
+      CLI_ARGS:
+        --output-directory=/home/runner/output
+        --input-directory=/home/runner/input
+        --extra-model-paths-config=/extra_model_paths.yaml
+    security_opt:
+      - "label=type:nvidia_container_t"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: [ "0" ]
+              capabilities: [ gpu ]
+
+volumes:
+  comfyui-home:
+    driver: local
+    name: comfyui-home
