@@ -33,4 +33,6 @@ export PYTHONPYCACHEPREFIX="/home/runner/.cache/pycache"
 
 cd /home/runner
 
+python3 -m venv --system-site-packages .
+
 python3 /home/runner/ComfyUI/main.py --listen --port 8188 ${CLI_ARGS}

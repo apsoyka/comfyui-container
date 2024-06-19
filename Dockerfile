@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt update && \
     apt install --no-install-recommends --yes \
-    python3 python3-pip python3-wheel python3-setuptools python3-dev python3-gdbm python3-opencv python3-pil python3-tk python3-numpy \
+    python3-full python3-pip python3-wheel python3-setuptools python3-dev python3-gdbm python3-opencv python3-pil python3-tk python3-numpy \
     cython3 build-essential gcc g++ make ffmpeg x264 x265 git git-lfs bash libglib2.0-0 libharfbuzz-dev libfribidi-dev libxcb1-dev \
     libtiff5-dev libjpeg8-dev libopenjp2-7-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev
 
@@ -41,5 +41,5 @@ COPY --chown=runner:runner extra_model_paths.yaml /extra_model_paths.yaml
 USER runner:runner
 WORKDIR /home/runner
 EXPOSE 8188
-ENV CLI_ARGS=""
+ENV CLI_ARGS="" PATH=/home/runner/bin:$PATH
 ENTRYPOINT [ "/entrypoint.sh" ]
